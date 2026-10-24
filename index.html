@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#252525" />
+    <title>Typing Practice</title>
+
+    <style>
+      :root {
+        color-scheme: dark;
+        --background: #252525;
+        --surface: #303030;
+        --key-background: #3a3a3a;
+        --border: #505050;
+        --text: #ffffff;
+        --muted: #aaaaaa;
+        --accent: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--background);
+        color: var(--text);
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      .container {
+        width: min(1100px, 100%);
+        margin: 0 auto;
+        padding: 32px 20px;
+      }
+
+      header {
+        margin-bottom: 32px;
+        text-align: center;
+      }
+
+      header h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+      }
+
+      header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      /* Two-column layout */
+      .practice {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: center;
+        gap: 32px;
+      }
+
+      /* Image */
+      .image-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-width: 0;
+        min-height: 320px;
+        padding: 16px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+
+      .image-container img {
+        display: block;
+        max-width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+        border-radius: 6px;
+      }
+
+      /* Typing panel */
+      .typing-panel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        min-width: 0;
+        width: 100%;
+      }
+
+      .typing-section {
+        width: 100%;
+        text-align: center;
+      }
+
+      .typing-section label {
+        display: block;
+        margin-bottom: 12px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      #typing-input {
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--surface);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        outline: none;
+        text-align: center;
+        font-size: 18px;
+      }
+
+      #typing-input:focus {
+        border-color: var(--accent);
+      }
+
+      #feedback {
+        min-height: 20px;
+        margin: 12px 0 0;
+        font-size: 14px;
+      }
+
+      /* Keyboard */
+      .keyboard {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+      }
+
+      .keyboard-row {
+        display: flex;
+        justify-content: flex-start;
+        gap: 6px;
+        width: 100%;
+      }
+
+      /* Normal keys use a fixed width */
+      .key {
+        display: flex;
+        flex: 0 0 56px;
+        align-items: center;
+        justify-content: center;
+        width: 56px;
+        max-width: none;
+        min-width: 0;
+        height: 44px;
+        padding: 0 4px;
+        background: var(--key-background);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text);
+        font-size: 14px;
+        user-select: none;
+        transition:
+          background 80ms ease,
+          color 80ms ease;
+      }
+
+      .key.pressed {
+        background: var(--text);
+        color: var(--background);
+      }
+
+      /* Modifier keys */
+      .key[data-key="Tab"] {
+        flex-basis: 80px;
+      }
+
+      .key[data-key="CapsLock"] {
+        flex-basis: 90px;
+      }
+
+      .key[data-key="ShiftLeft"] {
+        flex-basis: 110px;
+      }
+
+      .key.space {
+        flex: 0 0 260px;
+        width: 260px;
+      }
+
+      footer {
+        margin-top: 40px;
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+      }
+
+      /* Tablet and mobile */
+      @media (max-width: 700px) {
+        .container {
+          padding: 24px 12px;
+        }
+
+        .practice {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
+
+        header h1 {
+          font-size: 24px;
+        }
+
+        .image-container {
+          min-height: 220px;
+        }
+
+        .image-container img {
+          max-height: 300px;
+        }
+
+        .typing-panel {
+          gap: 20px;
+        }
+
+        .keyboard-row {
+          gap: 4px;
+        }
+
+        .key {
+          flex-basis: 36px;
+          width: 36px;
+          height: 38px;
+          font-size: 12px;
+        }
+
+        .key[data-key="Tab"] {
+          flex-basis: 48px;
+        }
+
+        .key[data-key="CapsLock"] {
+          flex-basis: 54px;
+        }
+
+        .key[data-key="ShiftLeft"] {
+          flex-basis: 66px;
+        }
+
+        .key.space {
+          flex-basis: 160px;
+          width: 160px;
+        }
+      }
+
+      #hint-button {
+        padding: 8px 12px;
+        border: 1px solid #505050;
+        border-radius: 6px;
+        background: #3a3a3a;
+        color: #fff;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      #hint-button:hover {
+        background: #4a4a4a;
+      }
+
+      #hint {
+        color: #facc15;
+        font-weight: 600;
+        margin-top: 8px;
+      }
+
+      /* Very narrow screens */
+      @media (max-width: 380px) {
+        .keyboard-row {
+          gap: 3px;
+        }
+
+        .key {
+          flex-basis: 30px;
+          width: 30px;
+          height: 34px;
+          font-size: 11px;
+        }
+
+        .key[data-key="Tab"] {
+          flex-basis: 40px;
+        }
+
+        .key[data-key="CapsLock"] {
+          flex-basis: 44px;
+        }
+
+        .key[data-key="ShiftLeft"] {
+          flex-basis: 52px;
+        }
+
+        .key.space {
+          flex-basis: 130px;
+          width: 130px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>Bokmål Practice</h1>
+      </header>
+
+      <section class="practice" aria-label="Typing exercise">
+        <div class="image-container">
+          <img id="practice-image" alt="Image to identify" />
+        </div>
+
+        <div class="typing-panel">
+          <div class="typing-section">
+            <input
+              id="typing-input"
+              type="text"
+              placeholder="Start typing..."
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              autofocus
+            />
+
+            <button id="hint-button" type="button" aria-expanded="false">
+              Show hint
+            </button>
+
+            <p id="hint" hidden></p>
+            <p id="feedback" aria-live="polite"></p>
+          </div>
+
+          <section aria-label="Keyboard layout">
+            <div class="keyboard" id="keyboard">
+              <div class="keyboard-row">
+                <div class="key" data-key="Backquote">&nbsp;</div>
+                <div class="key" data-key="Digit1">u</div>
+                <div class="key" data-key="Digit2">e</div>
+                <div class="key" data-key="Digit3">i</div>
+                <div class="key" data-key="Digit4">v</div>
+              </div>
+
+              <div class="keyboard-row">
+                <div class="key" data-key="Tab">&nbsp;</div>
+                <div class="key" data-key="KeyQ">Home</div>
+                <div class="key" data-key="KeyW">l</div>
+                <div class="key" data-key="KeyE">r</div>
+                <div class="key" data-key="KeyR">g</div>
+              </div>
+
+              <div class="keyboard-row">
+                <div class="key" data-key="CapsLock">&nbsp;</div>
+                <div class="key" data-key="KeyA">BS</div>
+                <div class="key" data-key="KeyS">n</div>
+                <div class="key" data-key="KeyD">h</div>
+                <div class="key" data-key="KeyF">a</div>
+              </div>
+
+              <div class="keyboard-row">
+                <div class="key" data-key="ShiftLeft">Shift</div>
+                <div class="key" data-key="KeyZ">å</div>
+                <div class="key" data-key="KeyX">ø</div>
+                <div class="key" data-key="KeyC">b</div>
+                <div class="key" data-key="KeyV">4</div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
